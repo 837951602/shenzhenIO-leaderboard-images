@@ -1,0 +1,64 @@
+SetSimMode 2
+TH = 1500
+TL = 500
+LockMouse
+
+
+L1 = 50
+L2 = 0
+
+
+P1 = screenMD5()
+Rem P1LOOP
+Delay TH
+KeyPress "Enter", 1
+Delay TH
+P2 = screenMD5()
+If P2 = P1 Then 
+	Goto P2FAIL
+End If
+
+L1 = L1 + 1
+L2 = 0
+
+
+Rem P2LOOP
+
+KeyPress "Enter", 1
+Delay TH
+L2 = L2 + 1
+Plugin.Pic.PrintScreen 0, 0, 1920, 1080, "D:\ajjl\Img" & L1 & "," & L2 & ",0.bmp"
+Delay TL
+KeyDown "Tab", 1
+Delay TL
+Plugin.Pic.PrintScreen 0, 0, 1920, 1080, "D:\ajjl\Img" & L1 & "," & L2 & ",1.bmp"
+KeyUp "Tab", 1
+KeyPress "Esc", 1
+Delay TH
+KeyPress "Down", 1
+Delay TL
+P3 = screenMD5()
+If P2 <> P3 Then 
+	P2 = P3
+	Goto P2LOOP
+End If
+
+
+KeyPress "Esc", 1
+Delay TH
+
+
+Rem P2FAIL
+KeyPress "Down", 1
+Delay TH
+P2 = screenMD5()
+If P2 <> P1 Then 
+	P1 = P2
+	Goto P1LOOP
+End If
+
+Function screenMD5()
+Plugin.Pic.PrintScreen 0, 0, 1920, 1080, "D:\ajjl\x.bmp"
+screenMD5 = Plugin.Encrypt.Md5File("D:\ajjl\x.bmp")
+End Function
+
